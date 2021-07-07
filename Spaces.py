@@ -17,6 +17,7 @@ class NaveEspacial(pygame.sprite.Sprite):
         self.listaDisparo=[]
         self.vida=True
         self.velocidad=20
+        self.sonidoDisparo=pygame.mixer.Sound("E:/USER/Documents/python/compu grafica/Space invaders/sonidos_pygame/DisparoLaser.wav")
 
     def movimientoDerecha(self):
         self.rect.right+=self.velocidad
@@ -36,6 +37,7 @@ class NaveEspacial(pygame.sprite.Sprite):
     def disparar(self,x,y):
         miProyectil=proyectil(x,y,"E:/USER/Documents/python/compu grafica/Space invaders/imagenes_pygame/disparoa.jpg",True)
         self.listaDisparo.append(miProyectil)
+        self.sonidoDisparo.play()
 
     def dibujar(self, superficie):
         superficie.blit(self.ImagenNave,self.rect)
@@ -65,8 +67,7 @@ class proyectil(pygame.sprite.Sprite):
         superficie.blit(self.imagenProyectil,self.rect)
 
 class Invasor(pygame.sprite.Sprite):
-
-    
+  
     def __init__(self,posx,posy):
         pygame.sprite.Sprite.__init__(self)
         self.imagenA=pygame.image.load("E:/USER/Documents/python/compu grafica/Space invaders/imagenes_pygame/marcianoA.jpg")
@@ -89,7 +90,6 @@ class Invasor(pygame.sprite.Sprite):
         self.derecha=True
         self.contador=0
         self.maxDescenso=self.rect.top+20
-
 
     def trayectoria(self):
             self.rect.top-=self.velocidadDisparo 
@@ -143,11 +143,16 @@ class Invasor(pygame.sprite.Sprite):
             if self.rect.left<0:
                 self.derecha=True
                 self.contador+=1
+
 def spaceInvader():
     pygame.init()
     ventana=pygame.display.set_mode((ancho,alto))
     pygame.display.set_caption("Space Invader")
     ImagenFondo=pygame.image.load("E:/USER/Documents/python/compu grafica/Space invaders/imagenes_pygame/Fondo.jpg")
+    
+    pygame.mixer.music.load('E:/USER/Documents/python/compu grafica/Space invaders/sonidos_pygame/Intro.mp3')
+    pygame.mixer.music.play(100)
+
     
     jugador = NaveEspacial()
     enemigo=Invasor(100,100)
