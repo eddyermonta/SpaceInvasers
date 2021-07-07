@@ -86,6 +86,10 @@ class Invasor(pygame.sprite.Sprite):
         self.rangoDisparo=5
         self.timeCambio=1
 
+        self.derecha=True
+        self.contador=0
+        self.maxDescenso=self.rect.top+20
+
 
     def trayectoria(self):
             self.rect.top-=self.velocidadDisparo 
@@ -95,6 +99,7 @@ class Invasor(pygame.sprite.Sprite):
         superficie.blit(self.imagenInvasor,self.rect)
 
     def comportamiento(self, tiempo):
+        self._movimientos()
         self._ataque()       
         if self.timeCambio==tiempo:
             self.posImagen+=1
@@ -112,6 +117,32 @@ class Invasor(pygame.sprite.Sprite):
         miproyectil=proyectil(x,y,"E:/USER/Documents/python/compu grafica/Space invaders/imagenes_pygame/disparob.jpg",False)    
         self.listaDisparo.append(miproyectil)
 
+    def _movimientos(self):
+        if self.contador<3:
+            self._movimientoLateral()
+        else:
+            self._descenso()
+
+    def _descenso(self):
+        if self.maxDescenso==self.rect.top:
+            self.contador=0
+            self.maxDescenso=self.rect.top+20
+        elif self.maxDescenso==alto/2:
+            self._movimientoLateral()
+        else:
+            self.rect.top+=1
+    
+    def _movimientoLateral(self):
+        if self.derecha==True:
+            self.rect.left+=self.velocidadDisparo
+            if self.rect.left>ancho-100:
+                self.derecha=False
+                self.contador+=1
+        else:
+            self.rect.left-=self.velocidadDisparo
+            if self.rect.left<0:
+                self.derecha=True
+                self.contador+=1
 def spaceInvader():
     pygame.init()
     ventana=pygame.display.set_mode((ancho,alto))
