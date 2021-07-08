@@ -5,6 +5,7 @@ from random import randint
 ancho=900
 alto=480
 listaEnemigo=[]
+
 class NaveEspacial(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -150,18 +151,19 @@ def cargarEnemigos():
     x=100
     for i in range(3):
         x+=100
-        enemigo=Invasor(x,0,100,"D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marciano3A.jpg","D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marciano3B.jpg")
+        enemigo=Invasor(x,0,200,"D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marciano3A.jpg","D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marciano3B.jpg")
         listaEnemigo.append(enemigo)
     x=100
     for i in range(3):
         x+=100
-        enemigo=Invasor(x,80,100,"D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marciano2A.jpg","D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marciano2B.jpg")
+        enemigo=Invasor(x,80,200,"D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marciano2A.jpg","D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marciano2B.jpg")
         listaEnemigo.append(enemigo)
     x=115
     for i in range(3):
         x+=100
-        enemigo=Invasor(x,160,100,"D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marcianoA.jpg","D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marcianoB.jpg")
+        enemigo=Invasor(x,160,200,"D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marcianoA.jpg","D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marcianoB.jpg")
         listaEnemigo.append(enemigo)
+
 def spaceInvader():
     pygame.init()
     ventana=pygame.display.set_mode((ancho,alto))
@@ -209,18 +211,37 @@ def spaceInvader():
                 x.trayectoria()
                 if x.rect.top<-10:
                     jugador.listaDisparo.remove(x)
+                else: 
+                    for enemigo in listaEnemigo:
+                        if x.rect.colliderect(enemigo.rect):
+                            listaEnemigo.remove(enemigo)
+                            jugador.listaDisparo.remove(x)
+
        
         if len(listaEnemigo)>0:
             for enemigo in listaEnemigo:
                 enemigo.comportamiento(tiempo)
                 enemigo.dibujar(ventana)
+
+                if enemigo.rect.colliderect(jugador.rect):
+                    pass
+
                 if len(enemigo.listaDisparo)>0:
                     for x in enemigo.listaDisparo:
                         x.dibujar(ventana)
                         x.trayectoria()
 
-                        if x.rect.top>900:
+                        if x.rect.colliderect(jugador.rect):
+                            pass
+
+                        if x.rect.top>alto:
                             enemigo.listaDisparo.remove(x)
+
+                        else:
+                            for disparo in jugador.listaDisparo:
+                                if x.rect.colliderect(disparo.rect):
+                                    jugador.listaDisparo.remove(disparo)
+                                    enemigo.listaDisparo.remove(x)
         pygame.display.update()
 
 spaceInvader()
