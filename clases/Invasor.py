@@ -23,6 +23,8 @@ class invasor(pygame.sprite.Sprite):
         self.rangoDisparo=0.5
         self.timeCambio=1
 
+        self.conquista=False
+
         self.derecha=True
         self.contador=0
         self.maxDescenso=self.rect.top+20
