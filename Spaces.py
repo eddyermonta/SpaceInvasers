@@ -8,7 +8,7 @@ listaEnemigo=[]
 class NaveEspacial(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.ImagenNave=pygame.image.load("E:/USER/Documents/python/compu grafica/Space invaders/imagenes_pygame/nave.jpg")
+        self.ImagenNave=pygame.image.load("D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/nave.jpg")
 
         self.rect=self.ImagenNave.get_rect()
         self.rect.centerx=ancho/2
@@ -17,7 +17,7 @@ class NaveEspacial(pygame.sprite.Sprite):
         self.listaDisparo=[]
         self.vida=True
         self.velocidad=20
-        self.sonidoDisparo=pygame.mixer.Sound("E:/USER/Documents/python/compu grafica/Space invaders/sonidos_pygame/DisparoLaser.wav")
+        self.sonidoDisparo=pygame.mixer.Sound("D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/sonidos_pygame/DisparoLaser.wav")
 
     def movimientoDerecha(self):
         self.rect.right+=self.velocidad
@@ -35,7 +35,7 @@ class NaveEspacial(pygame.sprite.Sprite):
                 self.rect.right=ancho
     
     def disparar(self,x,y):
-        miProyectil=proyectil(x,y,"E:/USER/Documents/python/compu grafica/Space invaders/imagenes_pygame/disparoa.jpg",True)
+        miProyectil=proyectil(x,y,"D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/disparoa.jpg",True)
         self.listaDisparo.append(miProyectil)
         self.sonidoDisparo.play()
 
@@ -80,11 +80,11 @@ class Invasor(pygame.sprite.Sprite):
         self.rect=self.imagenInvasor.get_rect()
 
         self.listaDisparo=[]
-        self.velocidadDisparo=20
+        self.velocidadDisparo=1
         self.rect.top=posy
         self.rect.left=posx   
 
-        self.rangoDisparo=5
+        self.rangoDisparo=0.5
         self.timeCambio=1
 
         self.derecha=True
@@ -116,7 +116,7 @@ class Invasor(pygame.sprite.Sprite):
 
     def _disparo(self):
         x,y=self.rect.center
-        miproyectil=proyectil(x,y,"E:/USER/Documents/python/compu grafica/Space invaders/imagenes_pygame/disparob.jpg",False)    
+        miproyectil=proyectil(x,y,"D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/disparob.jpg",False)    
         self.listaDisparo.append(miproyectil)
 
     def _movimientos(self):
@@ -147,15 +147,28 @@ class Invasor(pygame.sprite.Sprite):
                 self.contador+=1
 
 def cargarEnemigos():
-    enemigo=Invasor(100,100,100,"E:/USER/Documents/python/compu grafica/Space invaders/imagenes_pygame/marcianoA.jpg","E:/USER/Documents/python/compu grafica/Space invaders/imagenes_pygame/marcianoB.jpg")
-    listaEnemigo.append(enemigo)
+    x=100
+    for i in range(3):
+        x+=100
+        enemigo=Invasor(x,0,100,"D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marciano3A.jpg","D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marciano3B.jpg")
+        listaEnemigo.append(enemigo)
+    x=100
+    for i in range(3):
+        x+=100
+        enemigo=Invasor(x,80,100,"D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marciano2A.jpg","D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marciano2B.jpg")
+        listaEnemigo.append(enemigo)
+    x=115
+    for i in range(3):
+        x+=100
+        enemigo=Invasor(x,160,100,"D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marcianoA.jpg","D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marcianoB.jpg")
+        listaEnemigo.append(enemigo)
 def spaceInvader():
     pygame.init()
     ventana=pygame.display.set_mode((ancho,alto))
     pygame.display.set_caption("Space Invader")
-    ImagenFondo=pygame.image.load("E:/USER/Documents/python/compu grafica/Space invaders/imagenes_pygame/Fondo.jpg")
-    
-    pygame.mixer.music.load('E:/USER/Documents/python/compu grafica/Space invaders/sonidos_pygame/Intro.mp3')
+    ImagenFondo=pygame.image.load("D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/Fondo.jpg")
+  
+    pygame.mixer.music.load('D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/sonidos_pygame/Intro.mp3')
     pygame.mixer.music.play(100)
 
     
