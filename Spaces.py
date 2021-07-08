@@ -2,166 +2,29 @@
 import pygame,sys
 from pygame.locals import *
 from random import randint
+from clases.Nave import NaveEspacial
+from clases.Invasor import invasor
+
+
 ancho=900
 alto=480
 listaEnemigo=[]
-
-class NaveEspacial(pygame.sprite.Sprite):
-    def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
-        self.ImagenNave=pygame.image.load("D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/nave.jpg")
-
-        self.rect=self.ImagenNave.get_rect()
-        self.rect.centerx=ancho/2
-        self.rect.centery=alto-30
-
-        self.listaDisparo=[]
-        self.vida=True
-        self.velocidad=20
-        self.sonidoDisparo=pygame.mixer.Sound("D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/sonidos_pygame/DisparoLaser.wav")
-
-    def movimientoDerecha(self):
-        self.rect.right+=self.velocidad
-        self._movimiento()
-
-    def movimientoIzquierda(self):
-        self.rect.left-=self.velocidad
-        self._movimiento()
-
-    def _movimiento(self):
-        if self.vida==True:
-            if self.rect.left<=0:
-                self.rect.left=0
-            elif self.rect.right>ancho:
-                self.rect.right=ancho
-    
-    def disparar(self,x,y):
-        miProyectil=proyectil(x,y,"D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/disparoa.jpg",True)
-        self.listaDisparo.append(miProyectil)
-        self.sonidoDisparo.play()
-
-    def dibujar(self, superficie):
-        superficie.blit(self.ImagenNave,self.rect)
-
-class proyectil(pygame.sprite.Sprite):
-    
-    def __init__(self,posx,posy,ruta,personaje):
-        pygame.sprite.Sprite.__init__(self)
-        self.imagenProyectil=pygame.image.load(ruta)
-
-        self.rect=self.imagenProyectil.get_rect()
-
-        self.velocidadDisparo=5
-
-        self.rect.top=posy
-        self.rect.left=posx   
-
-        self.disparoPersonaje=personaje
-
-    def trayectoria(self):
-            if self.disparoPersonaje:
-                self.rect.top-=self.velocidadDisparo 
-            else:
-                self.rect.top+=self.velocidadDisparo 
-        
-    def dibujar(self, superficie):
-        superficie.blit(self.imagenProyectil,self.rect)
-
-class Invasor(pygame.sprite.Sprite):
-  
-    def __init__(self,posx,posy,distancia,imagenUno,imagenDos):
-        pygame.sprite.Sprite.__init__(self)
-        self.imagenA=pygame.image.load(imagenUno)
-        self.imagenB=pygame.image.load(imagenDos)
-        
-        self.listaImagenes=[self.imagenA,self.imagenB]
-        self.posImagen=0
-
-        self.imagenInvasor=self.listaImagenes[self.posImagen]
-        self.rect=self.imagenInvasor.get_rect()
-
-        self.listaDisparo=[]
-        self.velocidadDisparo=1
-        self.rect.top=posy
-        self.rect.left=posx   
-
-        self.rangoDisparo=0.5
-        self.timeCambio=1
-
-        self.derecha=True
-        self.contador=0
-        self.maxDescenso=self.rect.top+20
-
-        self.limiteDerecha=posx+distancia
-        self.limiteIzquierda=posx-distancia
-    def trayectoria(self):
-            self.rect.top-=self.velocidadDisparo 
-        
-    def dibujar(self, superficie):
-        self.imagenInvasor=self.listaImagenes[self.posImagen]
-        superficie.blit(self.imagenInvasor,self.rect)
-
-    def comportamiento(self, tiempo):
-        self._movimientos()
-        self._ataque()       
-        if self.timeCambio==tiempo:
-            self.posImagen+=1
-            self.timeCambio+=1
-
-            if self.posImagen>len(self.listaImagenes)-1:
-                self.posImagen=0
-
-    def _ataque(self):
-        if(randint(0,100)<self.rangoDisparo):
-            self._disparo()
-
-    def _disparo(self):
-        x,y=self.rect.center
-        miproyectil=proyectil(x,y,"D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/disparob.jpg",False)    
-        self.listaDisparo.append(miproyectil)
-
-    def _movimientos(self):
-        if self.contador<3:
-            self._movimientoLateral()
-        else:
-            self._descenso()
-
-    def _descenso(self):
-        if self.maxDescenso==self.rect.top:
-            self.contador=0
-            self.maxDescenso=self.rect.top+20
-        elif self.maxDescenso==alto/2:
-            self._movimientoLateral()
-        else:
-            self.rect.top+=1
-    
-    def _movimientoLateral(self):
-        if self.derecha==True:
-            self.rect.left+=self.velocidadDisparo
-            if self.rect.left>self.limiteDerecha:
-                self.derecha=False
-                self.contador+=1
-        else:
-            self.rect.left-=self.velocidadDisparo
-            if self.rect.left<self.limiteIzquierda:
-                self.derecha=True
-                self.contador+=1
 
 def cargarEnemigos():
     x=100
     for i in range(3):
         x+=100
-        enemigo=Invasor(x,0,200,"D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marciano3A.jpg","D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marciano3B.jpg")
+        enemigo=invasor(x,0,200,"D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marciano3A.jpg","D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marciano3B.jpg")
         listaEnemigo.append(enemigo)
     x=100
     for i in range(3):
         x+=100
-        enemigo=Invasor(x,80,200,"D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marciano2A.jpg","D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marciano2B.jpg")
+        enemigo=invasor(x,80,200,"D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marciano2A.jpg","D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marciano2B.jpg")
         listaEnemigo.append(enemigo)
     x=115
     for i in range(3):
         x+=100
-        enemigo=Invasor(x,160,200,"D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marcianoA.jpg","D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marcianoB.jpg")
+        enemigo=invasor(x,160,200,"D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marcianoA.jpg","D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/marcianoB.jpg")
         listaEnemigo.append(enemigo)
 
 def spaceInvader():
@@ -174,7 +37,7 @@ def spaceInvader():
     pygame.mixer.music.play(100)
 
     
-    jugador = NaveEspacial()
+    jugador = NaveEspacial(ancho,alto)
     cargarEnemigos()
     #enemigo=Invasor(100,100)
     #demoProyectil=proyectil(ancho/2,alto-30)
@@ -191,9 +54,9 @@ def spaceInvader():
             if enJuego==True:
                 if evento.type==pygame.KEYDOWN:
                     if evento.key==K_LEFT:
-                        jugador.movimientoIzquierda()
+                        jugador.movimientoIzquierda(ancho)
                     elif evento.key==K_RIGHT:
-                        jugador.movimientoDerecha()
+                        jugador.movimientoDerecha(ancho)
                     elif evento.key==K_s:
                         x,y=jugador.rect.center
                         jugador.disparar(x,y)
@@ -220,7 +83,7 @@ def spaceInvader():
        
         if len(listaEnemigo)>0:
             for enemigo in listaEnemigo:
-                enemigo.comportamiento(tiempo)
+                enemigo.comportamiento(tiempo,alto)
                 enemigo.dibujar(ventana)
 
                 if enemigo.rect.colliderect(jugador.rect):
