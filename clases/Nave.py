@@ -35,10 +35,10 @@ class NaveEspacial(pygame.sprite.Sprite):
     def disparar(self,x,y):
         miProyectil=proyectil(x,y,"D:/Usuario/Documentos/Eduardo/Utp/semestre 5/computacion grafica/parte3/Space invaders/imagenes_pygame/disparoa.jpg",True)
         self.listaDisparo.append(miProyectil)
-        self.sonidoDisparo.play()
+        #self.sonidoDisparo.play()
 
     def destruccion(self):
-        self.sonidoExplosion.play()
+        #self.sonidoExplosion.play()
         self.vida=False
         self.velocidad=0
         self.ImagenNave=self.ImagenExplosion

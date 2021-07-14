@@ -1,3 +1,3 @@
-from clases.Invasor import invasor
-from clases.Nave import NaveEspacial
-from clases.Proyectil import proyectil
+from .Invasor import invasor
+from .Nave import NaveEspacial
+from .Proyectil import proyectil
